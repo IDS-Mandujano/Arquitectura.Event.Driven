@@ -17,9 +17,9 @@ func NewRabbitMQProducer(rabbitMQ *core.RabbitMQConfig) *RabbitMQProducer {
 
 func (r *RabbitMQProducer) PublishMachineStatus(machineID int, status string) error {
 	statusText := map[string]string{
-		"1": "Operativa",
-		"2": "En mantenimiento",
-		"3": "Fuera de servicio",
+		"1": "Disponible",
+		"2": "En uso",
+		"3": "Mantenimiento",
 	}[status]
 
 	if statusText == "" {
