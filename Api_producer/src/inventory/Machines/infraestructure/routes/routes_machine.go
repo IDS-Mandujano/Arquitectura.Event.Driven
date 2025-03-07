@@ -30,6 +30,6 @@ func SetupRoutesMachine(r *gin.Engine) {
 	r.POST("/machines", createMachineController.Execute)
 	r.GET("/machines/:id", getMachineById.Execute)
 	r.GET("/machines/status/:id", getStatusMachine.Execute)
-	r.PUT("/machines/:id", updateMachine.Execute) // Actualizado con RabbitMQ
+	r.PUT("/machines/:id", updateMachine.Execute)
 	r.DELETE("/machines/:id", deleteMachine.Execute)
 }

@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/streadway/amqp"
@@ -17,10 +18,22 @@ func NewRabbitMQ() (*RabbitMQConfig, error) {
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("Advertencia: No se pudo cargar el archivo .env, usando variables de entorno del sistema.")
+		log.Fatalf("Error loading .env file")
 	}
+	
 
-	dns := fmt.Sprintf("amqp://emandujano:Cacatua$99@54.225.236.159:5672/")
+	user := os.Getenv("RABBITMQ_USER")
+	password := os.Getenv("RABBITMQ_PASSWORD")
+	host := os.Getenv("RABBITMQ_HOST")
+	port := os.Getenv("RABBITMQ_PORT")
+
+	fmt.Println("RABBITMQ_USER:", os.Getenv("RABBITMQ_USER"))
+	fmt.Println("RABBITMQ_PASSWORD:", os.Getenv("RABBITMQ_PASSWORD"))
+	fmt.Println("RABBITMQ_HOST:", os.Getenv("RABBITMQ_HOST"))
+	fmt.Println("RABBITMQ_PORT:", os.Getenv("RABBITMQ_PORT"))
+
+
+	dns := fmt.Sprintf("amqp://%s:%s@%s:%s/", user, password, host, port)
 
 	conn, err := amqp.Dial(dns)
 	if err != nil {

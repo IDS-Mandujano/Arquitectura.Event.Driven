@@ -16,7 +16,17 @@ func NewRabbitMQProducer(rabbitMQ *core.RabbitMQConfig) *RabbitMQProducer {
 }
 
 func (r *RabbitMQProducer) PublishMachineStatus(machineID int, status string) error {
-	message := fmt.Sprintf("El estado de la máquina %d ha sido actualizado a %s.", machineID, status)
+	statusText := map[string]string{
+		"1": "Operativa",
+		"2": "En mantenimiento",
+		"3": "Fuera de servicio",
+	}[status]
+
+	if statusText == "" {
+		statusText = status
+	}
+
+	message := fmt.Sprintf("El estado de la máquina %d ha sido actualizado a %s.", machineID, statusText)
 	err := r.PublishMessage("machine_status_updates", message)
 	if err != nil {
 		return fmt.Errorf("error al publicar el mensaje en RabbitMQ: %w", err)
