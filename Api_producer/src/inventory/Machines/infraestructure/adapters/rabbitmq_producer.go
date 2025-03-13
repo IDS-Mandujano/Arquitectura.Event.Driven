@@ -35,12 +35,11 @@ func (r *RabbitMQProducer) PublishMachineStatus(machineID int, status string) er
 }
 
 func (r *RabbitMQProducer) PublishMessage(queueName, message string) error {
-	
 	err := r.RabbitMQ.Ch.ExchangeDeclare(
 		"logs",
 		"fanout",
 		true,
-		false, 
+		false,
 		false,
 		false,
 		nil,
@@ -53,8 +52,8 @@ func (r *RabbitMQProducer) PublishMessage(queueName, message string) error {
 	_, err = r.RabbitMQ.Ch.QueueDeclare(
 		"status_machine",
 		true,
-		false, 
-		false, 
+		false,
+		false,
 		false,
 		nil,
 	)
@@ -66,7 +65,7 @@ func (r *RabbitMQProducer) PublishMessage(queueName, message string) error {
 	err = r.RabbitMQ.Ch.QueueBind(
 		"status_machine",
 		"",
-		"logs", 
+		"logs",
 		false,
 		nil,
 	)
@@ -77,7 +76,7 @@ func (r *RabbitMQProducer) PublishMessage(queueName, message string) error {
 
 	err = r.RabbitMQ.Ch.Publish(
 		"logs",
-		"",     
+		"",
 		false,
 		false,
 		amqp.Publishing{
@@ -91,6 +90,5 @@ func (r *RabbitMQProducer) PublishMessage(queueName, message string) error {
 	}
 
 	log.Printf("Mensaje enviado al intercambio 'logs': %s", message)
-
 	return nil
 }

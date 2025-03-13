@@ -28,7 +28,7 @@ func main () {
 	equipamentInfra.SetupRoutesEquipament(r)
 	machineInfra.SetupRoutesMachine(r)
 
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(":3001"); err != nil {
 		log.Fatalf("Error al iniciar el servidor: %v",err)
 	}
 }

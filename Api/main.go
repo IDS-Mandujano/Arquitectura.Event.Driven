@@ -21,8 +21,8 @@ func main() {
 
 	http.HandleFunc("/receive", messageHandler.HandleMessage)
 
-	log.Println("Starting server on :8081")
-	if err := http.ListenAndServe(":8081", nil); err != nil {
+	log.Println("Starting server on :3002")
+	if err := http.ListenAndServe(":3002", nil); err != nil {
 		log.Fatalf("Error starting server: %s", err)
 	}
 }

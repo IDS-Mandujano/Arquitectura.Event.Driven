@@ -2,21 +2,21 @@ package machineusecases
 
 import (
 	"fmt"
-	"gym-system/src/inventory/Machines/application/repository"
+	"gym-system/src/inventory/Machines/infraestructure/adapters"
 )
 
-type PublishMachineStatusUseCase struct {
-	MachineStatusRepository repository.MachineStatusRepository
+type PublishMachineStatusService struct {
+	RabbitMQProducer *adapters.RabbitMQProducer
 }
 
-func NewPublishMachineStatusUseCase(machineStatusRepository repository.MachineStatusRepository) *PublishMachineStatusUseCase {
-	return &PublishMachineStatusUseCase{MachineStatusRepository: machineStatusRepository}
+func NewPublishMachineStatusService(rabbitMQProducer *adapters.RabbitMQProducer) *PublishMachineStatusService {
+	return &PublishMachineStatusService{RabbitMQProducer: rabbitMQProducer}
 }
 
-func (useCase *PublishMachineStatusUseCase) Execute(machineID int, status string) error {
-	err := useCase.MachineStatusRepository.PublishMachineStatus(machineID, status)
+func (service *PublishMachineStatusService) Publish(machineID int, status string) error {
+	err := service.RabbitMQProducer.PublishMachineStatus(machineID, status)
 	if err != nil {
-		return fmt.Errorf("error al publicar el mensaje: %w", err)
+		return fmt.Errorf("error al publicar el mensaje en RabbitMQ: %w", err)
 	}
 	return nil
 }

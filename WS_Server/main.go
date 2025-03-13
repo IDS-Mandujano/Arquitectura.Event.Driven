@@ -123,8 +123,8 @@ func main() {
 
 	http.HandleFunc("/ws", handleConnections)
 
-	port := ":8082"
-	log.Println("Servidor WebSocket corriendo en http://localhost" + port)
+	port := ":8080"
+	log.Println("Servidor WebSocket corriendo en http://54.225.236.159" + port)
 	err := http.ListenAndServe(port, nil)
 	if err != nil {
 		log.Fatal("Error al iniciar el servidor:", err)

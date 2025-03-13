@@ -2,7 +2,7 @@ package machine
 
 import (
 	"gym-system/src/core"
-	"gym-system/src/inventory/Machines/application/useCases"
+	machineusecases "gym-system/src/inventory/Machines/application/useCases"
 	"gym-system/src/inventory/Machines/infraestructure/adapters"
 	machineControllers "gym-system/src/inventory/Machines/infraestructure/controllers"
 	"log"
@@ -17,13 +17,17 @@ func SetupRoutesMachine(r *gin.Engine) {
 	if err != nil {
 		log.Fatalf("No se pudo conectar a RabbitMQ: %v", err)
 	}
+
 	rabbitMQProducer := adapters.NewRabbitMQProducer(rabbitMQInstance)
+
+	publishMachineStatusService := machineusecases.NewPublishMachineStatusService(rabbitMQProducer)
 
 	listMachineController := machineControllers.NewListMachineController(*machineusecases.NewListMachine(dbInstance))
 	createMachineController := machineControllers.NewCreateMachineController(*machineusecases.NewCreateMachine(dbInstance))
 	getMachineById := machineControllers.NewMachineByIdController(*machineusecases.NewMachineById(dbInstance))
 	getStatusMachine := machineControllers.NewStatusMachine(machineusecases.NewMachineStatus(dbInstance))
-	updateMachine := machineControllers.NewUpdateMachineController(*machineusecases.NewUpdateMachine(dbInstance), rabbitMQProducer)
+	
+	updateMachine := machineControllers.NewUpdateMachineController(*machineusecases.NewUpdateMachine(dbInstance, publishMachineStatusService))
 	deleteMachine := machineControllers.NewDeleteMachine(*machineusecases.NewDeleteMachine(dbInstance))
 
 	r.GET("/machines", listMachineController.Execute)

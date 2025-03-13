@@ -32,7 +32,7 @@ func sendToAPI(message []byte) error {
 
     body := bytes.NewBuffer(messageBytes)
 
-    resp, err := http.Post("http://localhost:8081/receive", "application/json", body)
+    resp, err := http.Post("http://54.208.214.104:3002/receive", "application/json", body)
     if err != nil {
         return fmt.Errorf("error al enviar mensaje a la API: %w", err)
     }
