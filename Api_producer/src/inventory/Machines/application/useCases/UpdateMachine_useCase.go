@@ -12,7 +12,7 @@ type UpdateMachine struct {
 
 func NewUpdateMachine(db repository.IMachineRepository, publishStatusService *PublishMachineStatusService) *UpdateMachine {
 	return &UpdateMachine{
-		db:                   db,
+		db: db,
 		publishStatusService: publishStatusService,
 	}
 }
